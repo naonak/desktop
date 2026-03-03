@@ -31,7 +31,10 @@ A WireGuard and AmneziaWG client for desktop.
 
 ### Linux Tarball Installation (Recommended)
 
-In future versions, these scripts will be bundled with the tarball. For now, this command is the simplest way to get up and running.
+1. Download the `tar.gz` file from the latest release.
+2. Run the installation command listed below from a shell in the download directory.
+
+> **Note:** In future versions, these scripts will be bundled with the tarball. For now, this command is the simplest way to get up and running.
 
 **Install**
 ```bash 

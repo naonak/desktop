@@ -29,12 +29,32 @@ A WireGuard and AmneziaWG client for desktop.
 
 > **Note:** Only `systemd`-based Linux systems are currently supported. Also, the firewall must use `nftables` or `iptables` with the nft backend (`iptables-nft`).
 
-### Linux Tarball Installation (Recommended)
+### Debian Install
+
+This is the easiest method and gives you **automatic updates** for the app and daemon through your normal system package manager.
+
+1. Download the `.deb` file from the latest release.
+2. From the directory where you downloaded the file:
+
+**Install**
+```bash
+sudo apt install ./wgtunnel*.deb
+```
+
+**Uninstall** (Optional)
+
+```bash
+sudo apt remove wgtunnel
+```
+
+### Linux Tarball Installation (Manual updates only)
+
+For users on immutable distros, NixOS, or who prefer zero repository footprint.
 
 1. Download the `tar.gz` file from the latest release.
-2. Run the installation command listed below from a shell in the download directory.
+2. From the directory where you downloaded the file:
 
-> **Note:** In future versions, these scripts will be bundled with the tarball. For now, this command is the simplest way to get up and running.
+> **Note:** In future versions, these scripts will be bundled with the tarball.
 
 **Install**
 ```bash 

@@ -41,12 +41,6 @@ This is the easiest method and gives you **automatic updates** for the app and d
 sudo apt install ./wgtunnel*.deb
 ```
 
-**Uninstall** (Optional)
-
-```bash
-sudo apt remove wgtunnel
-```
-
 ### Arch Linux
 
 For Arch, the app is available on the [AUR](https://aur.archlinux.org/packages/wgtunnel-bin).  

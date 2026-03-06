@@ -277,6 +277,77 @@ object PermissionsHelper {
         }
     }
 
+    fun isOwnerOnly(path: Path): Boolean {
+        if (!Files.exists(path) || !Files.isRegularFile(path)) {
+            Logger.w { "isOwnerOnly check failed basic validation: $path" }
+            return false
+        }
+
+        return try {
+            if (SystemUtils.IS_OS_WINDOWS) {
+                isOwnerOnlyWindows(path)
+            } else {
+                isOwnerOnlyPosix(path)
+            }
+        } catch (e: Exception) {
+            Logger.e(e) { "Failed to verify owner-only permissions for: $path" }
+            false
+        }
+    }
+
+    private fun isOwnerOnlyPosix(path: Path): Boolean {
+        return try {
+            val perms = Files.getPosixFilePermissions(path)
+            // Exact match to what setOwnerOnly applies
+            perms == PosixFilePermissions.fromString(OWNER_ONLY_PRIVATE_FILE)
+        } catch (e: Exception) {
+            Logger.w(e) { "POSIX permission read failed for $path" }
+            false
+        }
+    }
+
+    private fun isOwnerOnlyWindows(path: Path): Boolean {
+        return try {
+            val process = ProcessBuilder(ICACLS, path.toString()).start()
+            val output = process.inputStream.bufferedReader().readText().trim()
+            val exitCode = process.waitFor()
+
+            if (exitCode != 0) {
+                Logger.w { "icacls failed (exit $exitCode) while checking $path" }
+                return false
+            }
+
+            val currentUser = System.getProperty("user.name").lowercase()
+
+            // Owner must have full control
+            val ownerHasFullControl =
+                output.contains("$currentUser:(F)", ignoreCase = true) ||
+                    output.contains("$currentUser:(M)", ignoreCase = true)
+
+            // Block dangerous groups
+            val dangerousGroups = listOf("everyone", "users", "authenticated users", "s-1-5-32-545")
+            val hasDangerousWrite =
+                dangerousGroups.any { group ->
+                    output.contains(group, ignoreCase = true) &&
+                        (output.contains("$group:(F)", ignoreCase = true) ||
+                            output.contains("$group:(M)", ignoreCase = true) ||
+                            output.contains("$group:(W)", ignoreCase = true))
+                }
+
+            if (!ownerHasFullControl) {
+                Logger.w { "IPC key owner does not have full control: $path" }
+            }
+            if (hasDangerousWrite) {
+                Logger.w { "Dangerous group write access found on IPC key: $path" }
+            }
+
+            ownerHasFullControl && !hasDangerousWrite
+        } catch (e: Exception) {
+            Logger.w(e) { "Windows ACL check failed for $path" }
+            false
+        }
+    }
+
     private fun logWindowsACLs(path: String) {
         runCatching {
             val output =

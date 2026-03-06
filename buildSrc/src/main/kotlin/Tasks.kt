@@ -13,9 +13,8 @@ fun Project.registerConveyorTask(
         val outputDir = layout.buildDirectory.dir("conveyor/$subDir")
         outputs.dir(outputDir)
 
-        (System.getenv("CONVEYOR_SIGNING_KEY") ?: LocalProperties.get("conveyor.signing-key"))?.let {
-            environment("CONVEYOR_SIGNING_KEY", it)
-        }
+        (System.getenv("CONVEYOR_SIGNING_KEY") ?: LocalProperties.get("conveyor.signing-key"))
+            ?.let { environment("CONVEYOR_SIGNING_KEY", it) }
 
         (System.getenv("CONVEYOR_PAT") ?: LocalProperties.get("github.pat"))?.let {
             environment("CONVEYOR_PAT", it)

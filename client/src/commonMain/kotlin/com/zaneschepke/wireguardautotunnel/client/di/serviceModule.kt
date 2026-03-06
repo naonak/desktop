@@ -87,10 +87,8 @@ val serviceModule = module {
                     if (path == Routes.DAEMON_BASE) return@intercept
 
                     val secret = IPC.getIPCSecret()
-                    val user = System.getProperty("user.name")
                     val timestamp = System.currentTimeMillis() / 1000
 
-                    // extract body string without destroying the payload
                     val bodyString =
                         when (payload) {
                             is TextContent -> payload.text
@@ -100,9 +98,9 @@ val serviceModule = module {
 
                     val signature = HmacProtector.generateSignature(secret, timestamp, bodyString)
 
-                    context.header(Headers.HMAC_USER, user)
                     context.header(Headers.HMAC_TIMESTAMP, timestamp.toString())
                     context.header(Headers.HMAC_SIGNATURE, signature)
+                    context.header(Headers.HMAC_KEY_PATH, IPC.getIpcKeyPath())
 
                     proceedWith(payload)
                 }

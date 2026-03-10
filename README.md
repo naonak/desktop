@@ -46,8 +46,14 @@ sudo apt install ./wgtunnel*.deb
 For Arch, the app is available on the [AUR](https://aur.archlinux.org/packages/wgtunnel-bin).  
 You can install it using an AUR helper such as `yay`:
 
+**Install**
 ```bash
 yay -S wgtunnel-bin
+```
+
+**Start Daemon**
+```bash
+sudo systemctl enable --now wgtunnel-daemon.service
 ```
 
 ### Linux Tarball Installation (Manual updates only)

@@ -45,7 +45,7 @@ import com.zaneschepke.wireguardautotunnel.desktop.ui.screens.support.license.Li
 import com.zaneschepke.wireguardautotunnel.desktop.ui.screens.tunnels.TunnelsScreen
 import com.zaneschepke.wireguardautotunnel.desktop.ui.screens.tunnels.tunnel.TunnelScreen
 import com.zaneschepke.wireguardautotunnel.desktop.ui.state.AppUiState
-import com.zaneschepke.wireguardautotunnel.desktop.ui.theme.AlertRed
+import com.zaneschepke.wireguardautotunnel.desktop.ui.theme.ErrorRed
 import com.zaneschepke.wireguardautotunnel.desktop.viewmodel.AppViewModel
 import com.zaneschepke.wireguardautotunnel.desktop.viewmodel.TunnelViewModel
 import io.github.sudarshanmhasrup.localina.api.LocalinaApp
@@ -158,7 +158,7 @@ fun App(uiState: AppUiState, viewModel: AppViewModel, toaster: ToasterState) {
                                     railState.targetValue == WideNavigationRailValue.Expanded,
                                 icon = {
                                     CustomTooltip(text = "Lockdown active") {
-                                        Icon(Icons.Filled.Lock, "Lockdown active", tint = AlertRed)
+                                        Icon(Icons.Filled.Lock, "Lockdown active", tint = ErrorRed)
                                     }
                                 },
                                 enabled = false,
@@ -230,7 +230,7 @@ fun App(uiState: AppUiState, viewModel: AppViewModel, toaster: ToasterState) {
                         entryProvider =
                             entryProvider {
                                 currentTab.startRoute
-                                entry<Route.Tunnels> { TunnelsScreen() }
+                                entry<Route.Tunnels> { TunnelsScreen(viewModel) }
                                 entry<Route.Tunnel> {
                                     val viewModel: TunnelViewModel =
                                         koinViewModel(parameters = { parametersOf(it.id) })

@@ -5,7 +5,6 @@ import com.dokar.sonner.ToastType
 import com.zaneschepke.wireguardautotunnel.client.domain.error.ClientException
 import com.zaneschepke.wireguardautotunnel.client.domain.model.TunnelConfig
 import com.zaneschepke.wireguardautotunnel.client.domain.repository.TunnelRepository
-import com.zaneschepke.wireguardautotunnel.client.service.BackendService
 import com.zaneschepke.wireguardautotunnel.client.service.TunnelImportService
 import com.zaneschepke.wireguardautotunnel.client.service.TunnelService
 import com.zaneschepke.wireguardautotunnel.desktop.ui.screens.tunnels.DeleteIntent
@@ -19,14 +18,12 @@ import io.github.vinceglb.filekit.dialogs.openFileSaver
 import io.github.vinceglb.filekit.name
 import io.github.vinceglb.filekit.write
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.viewmodel.container
 
 class TunnelsViewModel(
     private val tunnelRepository: TunnelRepository,
-    private val backendService: BackendService,
     private val tunnelService: TunnelService,
     private val tunnelImportService: TunnelImportService,
 ) : ContainerHost<TunnelsUiState, AppSideEffect>, ViewModel() {
@@ -40,13 +37,6 @@ class TunnelsViewModel(
                 tunnelRepository.flow.collect { tunnels ->
                     reduce { state.copy(tunnels = tunnels, isLoaded = true) }
                 }
-            }
-            intent {
-                backendService
-                    .statusFlow()
-                    .map { it.activeTunnels }
-                    .distinctUntilChanged()
-                    .collect { reduce { state.copy(tunnelStates = it) } }
             }
         }
 

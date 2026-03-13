@@ -14,7 +14,7 @@ val BalticSea = Color(0xFF1C1B1F)
 val ElectricTeal = Color(0xFF4DD0E1)
 
 // Status colors
-val SilverTree = Color(0xFF6DB58B)
-val AlertRed = Color(0xFFCF6679)
-val Straw = Color(0xFFD4C483)
+val HealthyGreen = Color(0xFF26A69A)
+val ErrorRed = Color(0xFFE53935)
+val WarningAmber = Color(0xFFFFB300)
 val Disabled = CoolGray.copy(alpha = 0.4f)

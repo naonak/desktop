@@ -1,5 +1,6 @@
 package com.zaneschepke.wireguardautotunnel.desktop.ui.common.bar
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.window.WindowDraggableArea
@@ -7,16 +8,16 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.CropSquare
 import androidx.compose.material.icons.filled.Remove
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.WindowScope
 import com.zaneschepke.wireguardautotunnel.composeapp.generated.resources.Res
 import com.zaneschepke.wireguardautotunnel.composeapp.generated.resources.select_window_2
-import com.zaneschepke.wireguardautotunnel.composeapp.generated.resources.wgtunnel
+import com.zaneschepke.wireguardautotunnel.composeapp.generated.resources.titleicon
 import java.awt.Frame
 import java.awt.event.WindowStateListener
 import org.jetbrains.compose.resources.painterResource
@@ -41,16 +42,16 @@ fun WindowScope.TitleBar(onClose: () -> Unit) {
         Row(
             modifier =
                 Modifier.fillMaxWidth()
-                    .height(40.dp)
+                    .height(24.dp)
                     .background(MaterialTheme.colorScheme.background)
                     .padding(horizontal = 12.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Icon(
-                painter = painterResource(Res.drawable.wgtunnel),
+            Image(
+                painterResource(Res.drawable.titleicon),
                 contentDescription = null,
-                modifier = Modifier.size(20.dp),
-                tint = MaterialTheme.colorScheme.onBackground,
+                modifier = Modifier.size(24.dp),
+                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onBackground),
             )
 
             Spacer(Modifier.weight(1f))

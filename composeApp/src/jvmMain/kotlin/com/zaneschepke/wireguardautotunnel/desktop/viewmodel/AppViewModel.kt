@@ -8,6 +8,8 @@ import com.zaneschepke.wireguardautotunnel.client.service.DaemonService
 import com.zaneschepke.wireguardautotunnel.desktop.ui.sideeffects.AppSideEffect
 import com.zaneschepke.wireguardautotunnel.desktop.ui.state.AppUiState
 import io.github.sudarshanmhasrup.localina.api.LocaleUpdater
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.viewmodel.container
 
@@ -39,9 +41,15 @@ class AppViewModel(
             }
             intent { daemonService.alive.collect { reduce { state.copy(daemonConnected = it) } } }
             intent {
-                backendService.statusFlow().collect {
-                    reduce { state.copy(lockdownActive = it.killSwitchEnabled) }
-                }
+                backendService
+                    .statusFlow()
+                    .map { it.killSwitchEnabled to it.activeTunnels }
+                    .distinctUntilChanged()
+                    .collect { (lockdown, tunnelStates) ->
+                        reduce {
+                            state.copy(tunnelStatuses = tunnelStates, lockdownActive = lockdown)
+                        }
+                    }
             }
         }
 

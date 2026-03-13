@@ -1,11 +1,7 @@
 package com.zaneschepke.wireguardautotunnel.desktop.ui.screens.tunnels.components
 
 import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.foundation.ContextMenuArea
-import androidx.compose.foundation.ContextMenuItem
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -32,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.zaneschepke.wireguardautotunnel.client.domain.model.TunnelConfig
 import com.zaneschepke.wireguardautotunnel.core.ipc.dto.TunnelState
+import com.zaneschepke.wireguardautotunnel.core.ipc.dto.TunnelStatus
 import com.zaneschepke.wireguardautotunnel.desktop.ui.common.LocalNavController
 import com.zaneschepke.wireguardautotunnel.desktop.ui.common.button.SurfaceRow
 import com.zaneschepke.wireguardautotunnel.desktop.ui.common.button.SwitchWithDivider
@@ -51,6 +48,7 @@ import sh.calvin.reorderable.rememberReorderableLazyListState
 @Composable
 fun TunnelList(
     uiState: TunnelsUiState,
+    tunnelStatuses: List<TunnelStatus>,
     startTunnel: (id: Long) -> Unit,
     stopTunnel: (id: Long) -> Unit,
     onReorder: (Int, Int) -> Unit,
@@ -71,11 +69,11 @@ fun TunnelList(
         }
 
     val tunnelIndicators by
-        remember(uiState.tunnelStates, uiState.tunnels) {
+        remember(tunnelStatuses, uiState.tunnels) {
             derivedStateOf {
                 uiState.tunnels.associate { tunnel ->
                     val state =
-                        uiState.tunnelStates.firstOrNull { it.id == tunnel.id }?.state
+                        tunnelStatuses.firstOrNull { it.id == tunnel.id }?.state
                             ?: TunnelState.UNKNOWN
                     tunnel.id to (state.asColor() to state.asTooltipMessage())
                 }

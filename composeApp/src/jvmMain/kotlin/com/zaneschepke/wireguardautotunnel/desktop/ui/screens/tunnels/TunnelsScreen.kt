@@ -30,6 +30,7 @@ import com.zaneschepke.wireguardautotunnel.desktop.ui.common.tooltip.CustomToolt
 import com.zaneschepke.wireguardautotunnel.desktop.ui.screens.tunnels.components.TunnelList
 import com.zaneschepke.wireguardautotunnel.desktop.ui.sideeffects.AppSideEffect
 import com.zaneschepke.wireguardautotunnel.desktop.util.FileUtils
+import com.zaneschepke.wireguardautotunnel.desktop.viewmodel.AppViewModel
 import com.zaneschepke.wireguardautotunnel.desktop.viewmodel.TunnelsViewModel
 import io.github.vinceglb.filekit.PlatformFile
 import io.github.vinceglb.filekit.dialogs.FileKitMode
@@ -45,9 +46,10 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TunnelsScreen(viewModel: TunnelsViewModel = koinViewModel()) {
+fun TunnelsScreen(appViewModel: AppViewModel, viewModel: TunnelsViewModel = koinViewModel()) {
 
     val uiState by viewModel.collectAsState()
+    val appUiState by appViewModel.collectAsState()
 
     var pendingDeleteIntent by remember { mutableStateOf<DeleteIntent?>(null) }
 
@@ -171,6 +173,7 @@ fun TunnelsScreen(viewModel: TunnelsViewModel = koinViewModel()) {
         ) {
             TunnelList(
                 uiState = uiState,
+                tunnelStatuses = appUiState.tunnelStatuses,
                 startTunnel = viewModel::onStartTunnel,
                 stopTunnel = viewModel::onStopTunnel,
                 viewModel::onItemsReordered,

@@ -1392,6 +1392,29 @@
             ]
         },
         {
+            "uniqueId": "io.github.kdroidfilter:nucleus.energy-manager",
+            "funding": [
+                
+            ],
+            "developers": [
+                {
+                    "name": "kdroidFilter"
+                }
+            ],
+            "artifactVersion": "1.4.7",
+            "description": "Process-level energy efficiency mode (EcoQoS/PRIO_DARWIN_BG) for Compose Desktop",
+            "scm": {
+                "connection": "scm:git:git://github.com/kdroidFilter/Nucleus.git",
+                "url": "https://github.com/kdroidFilter/Nucleus",
+                "developerConnection": "scm:git:ssh://git@github.com/kdroidFilter/Nucleus.git"
+            },
+            "name": "Nucleus Energy Manager",
+            "website": "https://github.com/kdroidFilter/Nucleus",
+            "licenses": [
+                "MIT"
+            ]
+        },
+        {
             "uniqueId": "io.github.kdroidfilter:nucleus.linux-hidpi",
             "funding": [
                 

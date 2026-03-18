@@ -45,6 +45,7 @@ import com.zaneschepke.wireguardautotunnel.desktop.ui.state.TrayBadgeState
 import com.zaneschepke.wireguardautotunnel.desktop.ui.theme.ErrorRed
 import com.zaneschepke.wireguardautotunnel.desktop.ui.theme.WGTunnelTheme
 import com.zaneschepke.wireguardautotunnel.desktop.viewmodel.AppViewModel
+import io.github.kdroidfilter.nucleus.energymanager.EnergyManager
 import io.github.kdroidfilter.nucleus.hidpi.getLinuxNativeScaleFactor
 import io.github.kdroidfilter.nucleus.window.material.MaterialDecoratedWindow
 import io.github.kdroidfilter.nucleus.window.material.MaterialTitleBar
@@ -56,6 +57,8 @@ import org.koin.compose.KoinApplication
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.dsl.koinConfiguration
 import org.orbitmvi.orbit.compose.collectAsState
+import java.awt.event.WindowEvent
+import java.awt.event.WindowFocusListener
 
 @OptIn(ExperimentalTrayAppApi::class)
 fun main() {
@@ -143,7 +146,39 @@ fun main() {
                     icon = appIcon,
                     state = windowState,
                 ) {
-                    //                    window.minimumSize = java.awt.Dimension(950, 650)
+                    var isWindowFocused by remember { mutableStateOf(window.isFocused) }
+
+                    DisposableEffect(window) {
+                        val listener = object : WindowFocusListener {
+                            override fun windowGainedFocus(e: WindowEvent?) {
+                                isWindowFocused = true
+                            }
+                            override fun windowLostFocus(e: WindowEvent?) {
+                                isWindowFocused = false
+                            }
+                        }
+                        window.addWindowFocusListener(listener)
+                        onDispose { window.removeWindowFocusListener(listener) }
+                    }
+
+                    // improve energy efficiency when minimized and not focused
+                    LaunchedEffect(state.isMinimized, isWindowFocused) {
+                        when {
+                            state.isMinimized -> {
+                                EnergyManager.disableLightEfficiencyMode()
+                                EnergyManager.enableEfficiencyMode()
+                            }
+                            !isWindowFocused -> {
+                                EnergyManager.disableEfficiencyMode()
+                                EnergyManager.enableLightEfficiencyMode()
+                            }
+                            else -> {
+                                EnergyManager.disableEfficiencyMode()
+                                EnergyManager.disableLightEfficiencyMode()
+                            }
+                        }
+                    }
+
                     val viewModel: AppViewModel = koinViewModel()
                     val uiState by viewModel.collectAsState()
 

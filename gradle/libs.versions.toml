@@ -62,7 +62,7 @@ compose-icons = ["compose-material-icons-core", "compose-material-icons-extended
 filekit = [ "filekit-core", "filekit-dialogs", "filekit-dialogs-compose" ]
 orbit-mvi = ["orbit-compose", "orbit-viewmodel", "orbit-core"]
 
-nucleus = [ "nucleus-darkmode-detector", "nucleus-decorated-window-jni", "nucleus-decorated-window-matrial", "nucleus-linux-hidpi", "nucleus-system-color" ]
+nucleus = [ "nucleus-darkmode-detector", "nucleus-decorated-window-jni", "nucleus-decorated-window-matrial", "nucleus-linux-hidpi", "nucleus-system-color", "nucleus-enery-manager" ]
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -161,6 +161,7 @@ nucleus-decorated-window-matrial = { module = "io.github.kdroidfilter:nucleus.de
 nucleus-linux-hidpi = { module = "io.github.kdroidfilter:nucleus.linux-hidpi", version.ref = "nucleus" }
 nucleus-system-color = { module = "io.github.kdroidfilter:nucleus.system-color", version.ref = "nucleus" }
 nucleus-darkmode-detector = { module = "io.github.kdroidfilter:nucleus.darkmode-detector", version.ref = "nucleus" }
+nucleus-enery-manager = { module = "io.github.kdroidfilter:nucleus.energy-manager", version.ref = "nucleus" }
 
 # Icons
 compose-material-icons-core = { group = "org.jetbrains.compose.material", name = "material-icons-core", version.ref = "materialIcons" }
